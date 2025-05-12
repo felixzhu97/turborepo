@@ -1,0 +1,18 @@
+@startuml C4_Context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title TurboRepo系统上下文图
+
+Person(developer, "开发者", "使用TurboRepo进行monorepo开发")
+Person(ci, "CI系统", "自动化构建和部署")
+
+System(turborepo, "TurboRepo系统", "基于Rust的monorepo构建系统")
+System(git, "Git仓库", "版本控制系统")
+System(npm, "NPM仓库", "包依赖管理")
+
+Rel(developer, turborepo, "执行", "CLI命令")
+Rel(ci, turborepo, "调用", "构建任务")
+Rel(turborepo, git, "读取", "代码仓库")
+Rel(turborepo, npm, "访问", "依赖包")
+
+@enduml

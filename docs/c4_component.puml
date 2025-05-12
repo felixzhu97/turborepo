@@ -1,0 +1,25 @@
+@startuml C4_Component
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title TurboRepo组件图 - CLI工具内部结构
+
+Container_Boundary(cli, "CLI工具") {
+    Component(parser, "参数解析", "Rust", "解析命令行参数")
+    Component(runner, "任务运行器", "Rust", "执行构建任务")
+    Component(reporter, "报告生成", "Rust", "输出构建结果")
+    Component(daemon, "守护进程", "Rust", "管理长期运行任务")
+    
+    Component(config, "配置管理", "Rust", "读取turbo.json")
+    Component(logger, "日志系统", "Rust", "记录运行日志")
+}
+
+Container(core, "核心引擎", "Rust", "任务调度")
+
+Rel(parser, runner, "传递", "任务配置")
+Rel(runner, core, "调用", "任务API")
+Rel(runner, reporter, "发送", "构建结果") 
+Rel(daemon, core, "监听", "任务状态")
+Rel(config, parser, "提供", "默认配置")
+Rel(logger, runner, "记录", "执行日志")
+
+@enduml
