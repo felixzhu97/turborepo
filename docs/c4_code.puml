@@ -9,22 +9,22 @@ Container_Boundary(core, "核心引擎(crates/turborepo)") {
     Component(graph, "Graph模块", "Rust", "任务依赖图")
     Component(daemon, "Daemon模块", "Rust", "守护进程管理")
 
-    Component(run::builder, "RunBuilder", "Rust", "构建任务配置")
-    Component(run::executor, "TaskExecutor", "Rust", "任务执行器")
-    Component(cache::signature, "Signature", "Rust", "计算任务签名")
-    Component(graph::builder, "GraphBuilder", "Rust", "构建依赖图")
+    Component(run_builder, "RunBuilder", "Rust", "构建任务配置")
+    Component(run_executor, "TaskExecutor", "Rust", "任务执行器")
+    Component(cache_signature, "Signature", "Rust", "计算任务签名")
+    Component(graph_builder, "GraphBuilder", "Rust", "构建依赖图")
 }
 
 Container(cli, "CLI工具", "Rust", "命令行接口")
 
 Rel(cli, run, "调用", "执行构建")
-Rel(run::builder, run::executor, "创建", "任务实例")
-Rel(run::executor, cache, "检查", "缓存状态")
-Rel(run::executor, graph, "获取", "依赖关系")
-Rel(graph::builder, daemon, "注册", "长期任务")
-Rel(cache::signature, run::executor, "提供", "任务哈希")
+Rel(run_builder, run_executor, "创建", "任务实例")
+Rel(run_executor, cache, "检查", "缓存状态")
+Rel(run_executor, graph, "获取", "依赖关系")
+Rel(graph_builder, daemon, "注册", "长期任务")
+Rel(cache_signature, run_executor, "提供", "任务哈希")
 
-note right of run::executor
+note right of run_executor
     #[derive(Debug)]
     pub struct TaskExecutor {
         task: Task,
